@@ -6,9 +6,10 @@ const connectDB = async () => {
             process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/SimpleQuiz'
         );
 
-        console.log(`MongoDB connected at ${process.env.MONGODB_URI}`);
+        console.log(`MongoDB connected at ${conn.connection.host}`);
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        console.error(`MongoDB connection error: ${error.message}`);
+        if (error.reason) console.error(`Reason: ${error.reason}`);
         process.exit(1);
     }
 };
