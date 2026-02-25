@@ -1,0 +1,44 @@
+<h2 class="mb-4">Thêm câu hỏi mới</h2>
+
+<div class="card p-4 shadow-sm">
+    <form action="/questions" method="POST" id="createQuestionForm">
+        <div class="mb-3">
+            <label class="form-label fw-bold">Nội dung câu hỏi</label>
+            <input type="text" name="text" class="form-control" placeholder="Nhập câu hỏi..." required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Các lựa chọn</label>
+            <input type="text" id="optionsInput" name="options" class="form-control" placeholder="Ví dụ: A, B, C (phân cách bằng dấu phẩy)" required>
+            <div class="form-text text-danger" id="errorMsg" style="display:none;"></div>
+            <div class="form-text">Nhập ít nhất 2 lựa chọn, cách nhau bởi dấu phẩy.</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Vị trí đáp án đúng (0 là vị trí đầu tiên)</label>
+            <input type="number" name="correctAnswerIndex" class="form-control" placeholder="0 là lựa chọn đầu tiên" min="0" required>
+        </div>
+
+        <button type="submit" class="btn btn-teal">Lưu câu hỏi</button>
+        <a href="/questions" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+
+<script>
+    document.getElementById('createQuestionForm').addEventListener('submit', function(e) {
+        const optionsInput = document.getElementById('optionsInput').value;
+        const errorMsg = document.getElementById('errorMsg');
+        
+        // Tách chuỗi bằng dấu phẩy và loại bỏ khoảng trắng thừa
+        const options = optionsInput.split(',').map(opt => opt.trim()).filter(opt => opt !== '');
+
+        if (options.length < 2) {
+            e.preventDefault(); // Chặn gửi form
+            errorMsg.style.display = 'block';
+            errorMsg.innerText = `Lỗi: Bạn mới nhập ${options.length} lựa chọn. Cần ít nhất 2 lựa chọn cách nhau bởi dấu phẩy (,)`;
+            document.getElementById('optionsInput').focus();
+        } else {
+            errorMsg.style.display = 'none';
+        }
+    });
+</script>

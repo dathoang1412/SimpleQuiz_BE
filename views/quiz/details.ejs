@@ -1,0 +1,110 @@
+<div class="card mb-4 fade-in-up"
+    style="border: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #0d9488, #14b8a6) border-box;">
+    <div class="card-body" style="padding: 2rem;">
+        <h2 class="card-title"
+            style="background: linear-gradient(135deg, #0d9488, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Poppins', sans-serif;">
+            <%= quiz.title %>
+        </h2>
+        <p class="card-text lead" style="color: var(--text-secondary); margin-top: 1rem;">
+            <%= quiz.description %>
+        </p>
+        <a href="/quizzes" class="btn btn-outline-secondary btn-sm" style="margin-top: 1rem;">
+            ← Quay lại danh sách
+        </a>
+    </div>
+</div>
+
+<h3 class="mb-3" style="font-family: 'Poppins', sans-serif; color: var(--text-primary);">Danh sách câu hỏi trong Quiz
+    này</h3>
+
+<% if (quiz.questions && quiz.questions.length> 0) { %>
+    <div class="list-group" style="gap: 0.75rem;">
+        <% quiz.questions.forEach(function(q, index) { %>
+            <div class="list-group-item"
+                style="border: 1px solid #e2e8f0; border-radius: var(--radius-lg); padding: 1.25rem; background: white; box-shadow: var(--shadow-sm);">
+                <div class="d-flex w-100 justify-content-between align-items-start">
+                    <h5 class="mb-3" style="color: var(--text-primary); font-weight: 600;">
+                        <span
+                            style="display: inline-block; width: 32px; height: 32px; background: linear-gradient(135deg, #0d9488, #14b8a6); color: white; border-radius: 50%; text-align: center; line-height: 32px; margin-right: 0.5rem; font-size: 0.875rem;">
+                            <%= index + 1 %>
+                        </span>
+                        <%= q.text %>
+                    </h5>
+                </div>
+                <ul class="mt-2 mb-1" style="list-style: none; padding-left: 0;">
+                    <% q.options.forEach(function(opt, i) { %>
+                        <li class="<%= i === q.correctAnswerIndex ? 'text-success fw-bold' : '' %>"
+                            style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center;">
+                            <% if (i===q.correctAnswerIndex) { %>
+                                <span style="color: #10b981; margin-right: 0.5rem; font-size: 1.25rem;">✓</span>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted); margin-right: 0.5rem;">○</span>
+                                    <% } %>
+                                        <%= opt %>
+                        </li>
+                        <% }); %>
+                </ul>
+            </div>
+            <% }); %>
+    </div>
+    <% } else { %>
+        <div class="alert alert-warning fade-in-up"
+            style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; border-left: 4px solid #f59e0b;">
+            <strong>⚠️ Quiz này chưa có câu hỏi nào.</strong> Hãy thêm câu hỏi bên dưới!
+        </div>
+        <% } %>
+
+            <div class="mt-5 mb-5 fade-in-up" style="animation-delay: 0.2s;">
+                <h4 style="font-family: 'Poppins', sans-serif; color: var(--text-primary); margin-bottom: 1.5rem;">Thêm
+                    câu hỏi mới vào Quiz này</h4>
+                <form action="/quizzes/<%= quiz._id %>/questions" method="POST" class="border p-4 rounded"
+                    style="background: linear-gradient(135deg, #f8fafc, #ffffff); border: 2px solid #e2e8f0 !important; border-radius: var(--radius-lg) !important; box-shadow: var(--shadow-md);">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="color: var(--text-primary);">Nội dung câu hỏi</label>
+                        <input type="text" name="text" class="form-control" placeholder="Nhập câu hỏi" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="color: var(--text-primary);">Các phương án và đáp án
+                            đúng:</label>
+                        <% ['A', 'B' , 'C' , 'D' ].forEach((label, index)=> { %>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"
+                                    style="background: linear-gradient(135deg, #0d9488, #14b8a6); color: white; font-weight: 600; border: none;">
+                                    <%= label %>
+                                </span>
+                                <input type="text" name="options" class="form-control"
+                                    placeholder="Nhập lựa chọn <%= label %>" required>
+                                <div class="input-group-text" style="background: white; border: 2px solid #e2e8f0;">
+                                    <input class="form-check-input mt-0" type="radio" name="correctAnswerIndex"
+                                        value="<%= index %>" required>
+                                    <small class="ms-1" style="color: var(--text-secondary);">Đúng</small>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+
+                    <button type="submit" class="btn btn-success"
+                        style="background: linear-gradient(135deg, #10b981, #34d399) !important; border: none; box-shadow: var(--shadow-md); font-weight: 600;">
+                        <span style="font-size: 1.2rem; margin-right: 0.25rem;">+</span> Thêm ngay
+                    </button>
+                </form>
+            </div>
+            <script>
+                document.getElementById('quickAddForm')?.addEventListener('submit', function (e) {
+                    const input = document.getElementById('quickOptions')?.value;
+                    const error = document.getElementById('quickError');
+
+                    if (!input || !error) return;
+
+                    const parts = input.split(',').map(s => s.trim()).filter(s => s);
+
+                    if (parts.length < 2) {
+                        e.preventDefault();
+                        error.style.display = 'block';
+                        error.innerText = "Vui lòng nhập ít nhất 2 đáp án, cách nhau bởi dấu phẩy.";
+                    } else {
+                        error.style.display = 'none';
+                    }
+                });
+            </script>

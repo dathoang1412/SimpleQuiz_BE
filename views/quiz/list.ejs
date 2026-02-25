@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
+    <h2
+        style="background: linear-gradient(135deg, #0d9488, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Danh sách bài trắc nghiệm (Quiz)</h2>
+    <a href="/quizzes/create" class="btn btn-teal">
+        <span style="font-size: 1.2rem; margin-right: 0.25rem;">+</span> Tạo Quiz Mới
+    </a>
+</div>
+
+<div class="row">
+    <% if (quizzes && quizzes.length> 0) { %>
+        <% quizzes.forEach(function(quiz, index) { %>
+            <div class="col-md-4 mb-4" style="animation: fadeInUp 0.6s ease-out <%= (index * 0.1) %>s backwards;">
+                <div class="card h-100"
+                    style="border: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #0d9488, #14b8a6) border-box;">
+                    <div class="card-body">
+                        <h5 class="card-title text-teal" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
+                            <%= quiz.title %>
+                        </h5>
+                        <p class="card-text" style="color: var(--text-secondary);">
+                            <%= quiz.description %>
+                        </p>
+                        <span class="badge"
+                            style="background: linear-gradient(135deg, #14b8a6, #5eead4); color: white; font-size: 0.875rem;">
+                            <%= quiz.questions ? quiz.questions.length : 0 %> câu hỏi
+                        </span>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between"
+                        style="padding: 1rem 1.25rem;">
+                        <a href="/quizzes/<%= quiz._id %>" class="btn btn-outline-teal btn-sm">Xem chi tiết</a>
+                        <div class="d-flex gap-2">
+                            <a href="/quizzes/edit/<%= quiz._id %>" class="btn btn-warning btn-sm"
+                                style="border-radius: var(--radius-md);">Sửa</a>
+                            <form action="/quizzes/<%= quiz._id %>?_method=DELETE" method="POST"
+                                class="d-inline delete-form">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)"
+                                    style="border-radius: var(--radius-md);">Xóa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+                <% } else { %>
+                    <div class="col-12">
+                        <div class="alert alert-info fade-in-up"
+                            style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0c4a6e; border-left: 4px solid #0ea5e9;">
+                            <strong>📝 Chưa có bài quiz nào.</strong> Hãy tạo quiz đầu tiên của bạn!
+                        </div>
+                    </div>
+                    <% } %>
+</div>
+
+<script>
+    function confirmDelete(button) {
+        const form = button.closest('.delete-form');
+
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa?',
+            text: "Dữ liệu này sẽ không thể khôi phục lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#0d9488',
+            confirmButtonText: 'Vâng, xóa nó!',
+            cancelButtonText: 'Hủy bỏ',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-3 shadow-lg',
+                confirmButton: 'btn btn-danger px-4',
+                cancelButton: 'btn btn-outline-teal px-4'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+</script>

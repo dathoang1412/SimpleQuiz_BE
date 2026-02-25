@@ -1,0 +1,723 @@
+{
+    "info": {
+        "_postman_id": "quiz-api-collection-2024",
+        "name": "Quiz Application API - Assignment 3",
+        "description": "Complete API collection for Quiz Application with Authentication",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"newuser\",\n    \"email\": \"newuser@example.com\",\n    \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/register",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "Register a new user account"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login - Regular User (John)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.token) {",
+                                    "    pm.environment.set(\"user_token\", jsonData.token);",
+                                    "    pm.environment.set(\"user_id\", jsonData.user._id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"john123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Login as regular user John and save token"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login - Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.token) {",
+                                    "    pm.environment.set(\"admin_token\", jsonData.token);",
+                                    "    pm.environment.set(\"admin_id\", jsonData.user._id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"admin@quiz.com\",\n    \"password\": \"admin123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Login as admin and save token"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login - Jane",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.token) {",
+                                    "    pm.environment.set(\"jane_token\", jsonData.token);",
+                                    "    pm.environment.set(\"jane_id\", jsonData.user._id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"jane@example.com\",\n    \"password\": \"jane123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Login as Jane and save token"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Current User",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "me"
+                            ]
+                        },
+                        "description": "Get current logged in user info (requires JWT token)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Authentication endpoints for user registration and login"
+        },
+        {
+            "name": "Questions",
+            "item": [
+                {
+                    "name": "Get All Questions (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/questions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions"
+                            ]
+                        },
+                        "description": "Get all questions - public access"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Question by ID (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/questions/{{question_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions",
+                                "{{question_id}}"
+                            ]
+                        },
+                        "description": "Get single question by ID - public access"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Question (Authenticated)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.data && jsonData.data._id) {",
+                                    "    pm.environment.set(\"question_id\", jsonData.data._id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"text\": \"What is Express.js?\",\n    \"options\": [\"A framework\", \"A database\", \"A language\", \"An operating system\"],\n    \"keywords\": [\"express\", \"nodejs\", \"framework\"],\n    \"correctAnswerIndex\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/questions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions"
+                            ]
+                        },
+                        "description": "Create a new question (requires authentication)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Question (Author Only)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"text\": \"What is Express.js? (Updated)\",\n    \"options\": [\"A Node.js framework\", \"A database\", \"A language\", \"An operating system\"],\n    \"keywords\": [\"express\", \"nodejs\", \"framework\", \"updated\"],\n    \"correctAnswerIndex\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/questions/{{question_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions",
+                                "{{question_id}}"
+                            ]
+                        },
+                        "description": "Update question (only author can update)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Question - Unauthorized (Should Fail)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jane_token}}",
+                                "description": "Using Jane's token to try updating John's question"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"text\": \"Trying to hack this question\",\n    \"options\": [\"A\", \"B\", \"C\", \"D\"],\n    \"keywords\": [\"hack\"],\n    \"correctAnswerIndex\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/questions/{{question_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions",
+                                "{{question_id}}"
+                            ]
+                        },
+                        "description": "Try to update another user's question (should fail with 403)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Question (Author Only)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/questions/{{question_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "questions",
+                                "{{question_id}}"
+                            ]
+                        },
+                        "description": "Delete question (only author can delete)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Question management endpoints"
+        },
+        {
+            "name": "Quizzes",
+            "item": [
+                {
+                    "name": "Get All Quizzes (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes"
+                            ]
+                        },
+                        "description": "Get all quizzes - public access"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Quiz by ID (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes/{{quiz_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes",
+                                "{{quiz_id}}"
+                            ]
+                        },
+                        "description": "Get single quiz by ID - public access"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Quiz (Admin Only)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.data && jsonData.data._id) {",
+                                    "    pm.environment.set(\"quiz_id\", jsonData.data._id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Node.js Fundamentals\",\n    \"description\": \"Test your knowledge of Node.js basics\",\n    \"questions\": []\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes"
+                            ]
+                        },
+                        "description": "Create a new quiz (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Quiz - Unauthorized (Should Fail)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "description": "Using regular user token"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Unauthorized Quiz\",\n    \"description\": \"This should fail\",\n    \"questions\": []\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes"
+                            ]
+                        },
+                        "description": "Try to create quiz as regular user (should fail with 403)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Quiz (Admin Only)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Node.js Fundamentals (Updated)\",\n    \"description\": \"Updated description for Node.js quiz\",\n    \"questions\": []\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes/{{quiz_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes",
+                                "{{quiz_id}}"
+                            ]
+                        },
+                        "description": "Update quiz (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Quiz (Admin Only)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes/{{quiz_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes",
+                                "{{quiz_id}}"
+                            ]
+                        },
+                        "description": "Delete quiz (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Question to Quiz (Admin Only)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"questionId\": \"{{question_id}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/quizzes/{{quiz_id}}/question",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "quizzes",
+                                "{{quiz_id}}",
+                                "question"
+                            ]
+                        },
+                        "description": "Add a question to quiz (admin only)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Quiz management endpoints (admin only for write operations)"
+        },
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Get All Users (Admin Only)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users"
+                            ]
+                        },
+                        "description": "Get all registered users (admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Users - Unauthorized (Should Fail)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "description": "Using regular user token"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users"
+                            ]
+                        },
+                        "description": "Try to get users as regular user (should fail with 403)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "User management endpoints (admin only)"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000",
+            "type": "string"
+        },
+        {
+            "key": "user_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "admin_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "jane_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "admin_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "jane_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "question_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "quiz_id",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}

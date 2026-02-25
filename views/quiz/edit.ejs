@@ -1,0 +1,43 @@
+<div class="row justify-content-center fade-in-up">
+    <div class="col-md-8">
+        <div class="card"
+            style="border: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #0d9488, #14b8a6) border-box; box-shadow: var(--shadow-xl);">
+            <div class="card-header text-white py-3"
+                style="background: linear-gradient(135deg, #0f766e, #0d9488); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                <h4 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">✏️</span> Chỉnh sửa Quiz
+                </h4>
+            </div>
+
+            <div class="card-body p-4">
+                <form action="/quizzes/<%= quiz._id %>?_method=PUT" method="POST">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="color: var(--text-primary);">Tiêu đề Quiz</label>
+                        <input type="text" name="title" class="form-control" value="<%= quiz.title %>" required
+                            placeholder="Nhập tên bài trắc nghiệm..." style="font-size: 1rem;">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold" style="color: var(--text-primary);">Mô tả</label>
+                        <textarea name="description" class="form-control" rows="4" required
+                            placeholder="Mô tả ngắn gọn về nội dung bài thi..."
+                            style="font-size: 1rem;"><%= quiz.description %></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3"
+                        style="margin-top: 2rem;">
+                        <a href="/quizzes" class="btn btn-outline-secondary px-4">
+                            Hủy bỏ
+                        </a>
+                        <button type="submit" class="btn btn-teal px-5"
+                            style="box-shadow: var(--shadow-teal); font-weight: 600;">
+                            Lưu thay đổi
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

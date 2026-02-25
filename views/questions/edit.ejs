@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-teal text-white py-3">
+                <h5 class="mb-0">Chỉnh sửa câu hỏi</h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <form action="/questions/<%= question._id %>?_method=PUT" method="POST" id="editQuestionForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nội dung câu hỏi</label>
+                        <input type="text" name="text" class="form-control focus-teal" value="<%= question.text %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Các lựa chọn</label>
+                        <small class="text-muted d-block mb-2">(Phân cách các đáp án bằng dấu phẩy)</small>
+                        <input type="text" name="options" class="form-control focus-teal" value="<%= question.options.join(', ') %>" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Vị trí đáp án đúng</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">Vị trí:</span>
+                            <input type="number" name="correctAnswerIndex" class="form-control focus-teal" value="<%= question.correctAnswerIndex %>" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4 border-top pt-3">
+                        <a href="/questions" class="btn btn-light text-secondary border">
+                            <i class="bi bi-x-circle"></i> Hủy bỏ
+                        </a>
+                        <button type="submit" class="btn btn-teal px-4 shadow-sm">
+                            <i class="bi bi-check-lg"></i> Cập nhật ngay
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

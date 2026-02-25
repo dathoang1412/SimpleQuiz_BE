@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
+    <h2
+        style="background: linear-gradient(135deg, #0d9488, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Danh sách câu hỏi</h2>
+    <a href="/questions/create" class="btn btn-teal">
+        <span style="font-size: 1.2rem; margin-right: 0.25rem;">+</span> Tạo Question mới
+    </a>
+</div>
+
+<div class="table-responsive fade-in-up" style="animation-delay: 0.1s;">
+    <table class="table table-hover"
+        style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); background: white;">
+        <thead style="background: linear-gradient(135deg, #0d9488, #14b8a6); color: white;">
+            <tr>
+                <th style="padding: 1rem; font-weight: 600; font-family: 'Poppins', sans-serif;">Nội dung</th>
+                <th style="padding: 1rem; font-weight: 600; font-family: 'Poppins', sans-serif;">Các lựa chọn</th>
+                <th style="width: 150px; padding: 1rem; font-weight: 600; font-family: 'Poppins', sans-serif;">Hành động
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (questions && questions.length> 0) { %>
+                <% questions.forEach(function(q) { %>
+                    <tr style="transition: all 0.3s ease;">
+                        <td style="padding: 1rem; color: var(--text-primary); font-weight: 500;">
+                            <%= q.text %>
+                        </td>
+                        <td style="padding: 1rem; color: var(--text-secondary);">
+                            <%= q.options.join(', ') %></td>
+                        <td style="padding: 1rem;">
+                            <div class="d-flex gap-2">
+                                <a href="/questions/edit/<%= q._id %>" class="btn btn-outline-teal btn-sm" style="font-size: 0.875rem;">
+                                    ✏️ Sửa
+                                </a>
+                                <form action="/questions/<%= q._id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('
+                                Xóa nhé?');">
+                                <button class="btn btn-danger btn-sm"
+                                    style="font-size: 0.875rem; border-radius: var(--radius-md);">🗑️ Xóa</button>
+                                </form>
+</div>
+</td>
+</tr>
+<% }); %>
+    <% } else { %>
+        <tr>
+            <td colspan="3" class="text-center" style="padding: 2rem;">
+                <div style="color: var(--text-muted); font-size: 1.1rem;">
+                    📝 Chưa có câu hỏi nào. Hãy tạo câu hỏi đầu tiên!
+                </div>
+            </td>
+        </tr>
+        <% } %>
+            </tbody>
+            </table>
+            </div>
