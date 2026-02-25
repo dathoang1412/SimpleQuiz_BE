@@ -116,11 +116,12 @@ const verifyAuthor = async (req, res, next) => {
             });
         }
 
-        // Allow if user is either the author OR an admin
-        const isAuthor = question.author.toString() === req.user._id.toString();
+        // Allow if user is an admin OR the author
         const isAdmin = req.user.admin === true;
+        const isAuthor = question.author && question.author.toString() === req.user._id.toString();
 
-        if (!isAuthor && !isAdmin) {
+        if (!isAdmin && !isAuthor) {
+            console.log(`[Auth Failed] User ${req.user._id} (Admin: ${isAdmin}) attempted to modify question ${questionId} (Author: ${question.author})`);
             return next({
                 status: 403,
                 message: 'You are not authorized to modify this question'
